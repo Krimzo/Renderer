@@ -18,9 +18,12 @@ public class Main {
     private static final Physics physics = new Physics();
 
     public static void start() throws Exception {
+        window.setResizeCB((Int2 newSize) -> {
+            context.setViewport(new Int2(), newSize);
+        });
+        window.setVSync(true);
         context.setDepthTest(true);
         context.setClearColor(new Color(50, 50, 50));
-        window.setVSync(true);
 
         renderer.shaders = new Shaders(context,
                 File.parseShader("shaders/Renderer.glsl", GL_VERTEX_SHADER),
@@ -36,6 +39,8 @@ public class Main {
 
         renderer.objects.add(cube1);
         physics.objects.add(cube1);
+
+        renderer.camera.setDefaultMovement(window, timer);
 
         timer.reset();
     }

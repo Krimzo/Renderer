@@ -1,13 +1,18 @@
 package window;
 
+import math.Int2;
 import org.lwjgl.opengl.GL;
+import window.callbacks.*;
+import window.input.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.Callbacks.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 public class Window {
-    private final long window;
+    public final long window;
+    public final Keyboard keyboard;
+    public final Mouse mouse;
 
     public Window(int width, int height, String title, boolean resizable) {
         if (!glfwInit()) {
@@ -23,6 +28,8 @@ public class Window {
         if ((window = glfwCreateWindow(width, height, title, NULL, NULL)) == NULL) {
             throw new Error("Failed to create a GLFW window");
         }
+        keyboard = new Keyboard(window);
+        mouse = new Mouse(window);
     }
     public GLContext initGL() {
         glfwMakeContextCurrent(window);
@@ -30,13 +37,15 @@ public class Window {
         return new GLContext();
     }
 
-    public StageMethod start = () -> {};
-    public StageMethod update = () -> {};
-    public StageMethod end = () -> {};
+    public StageCallback start = () -> {};
+    public StageCallback update = () -> {};
+    public StageCallback end = () -> {};
     public void run() throws Exception {
         show();
         start.method();
         while(!glfwWindowShouldClose(window)) {
+            keyboard.update();
+            mouse.update();
             update.method();
             glfwPollEvents();
         }
@@ -47,6 +56,25 @@ public class Window {
     }
     public void stop() {
         glfwSetWindowShouldClose(window, true);
+    }
+
+    public void setResizeCB(ResizeCallback callback) {
+        glfwSetFramebufferSizeCallback(window, (long window, int width, int height) -> {
+            callback.method(new Int2(width, height));
+        });
+    }
+
+    public Int2 getSize() {
+        int[] sizeX = new int[1];
+        int[] sizeY = new int[1];
+        glfwGetWindowSize(window, sizeX, sizeY);
+        return new Int2(sizeX[0], sizeY[0]);
+    }
+    public Int2 getPosition() {
+        int[] posX = new int[1];
+        int[] posY = new int[1];
+        glfwGetWindowPos(window, posX, posY);
+        return new Int2(posX[0], posY[0]);
     }
 
     public void hide() {

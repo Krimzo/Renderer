@@ -1,11 +1,17 @@
 package window;
 
+import math.*;
+
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL41.*;
 
 public class GLContext {
     protected GLContext() {}
+
+    public void setViewport(Int2 pos, Int2 size) {
+        glViewport(pos.x, pos.y, size.x, size.y);
+    }
 
     public void setClearColor(Color color) {
         final float toFlt = 1.0f / 255.0f;
