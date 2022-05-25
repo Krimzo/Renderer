@@ -90,6 +90,8 @@ public class File {
         }
         reader.close();
         file.close();
-        return (Vertex[]) vertices.toArray();
+        Vertex[] verts = new Vertex[vertices.size()];
+        verts = vertices.toArray(verts);
+        return verts;
     }
 }

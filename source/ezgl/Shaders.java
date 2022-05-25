@@ -1,15 +1,17 @@
 package ezgl;
 
 import math.*;
+import window.*;
 
 import java.util.*;
 
 import static org.lwjgl.opengl.GL46.*;
 
-public class Shaders {
+public class Shaders extends GLRequired {
     private final int program;
 
-    public Shaders(String vSource, String fSource) {
+    public Shaders(GLContext context, String vSource, String fSource) {
+        super(context);
         final int vShader = newShader(GL_VERTEX_SHADER, vSource);
         final int fShader = newShader(GL_FRAGMENT_SHADER, fSource);
         program = newProgram(vShader, fShader);
@@ -88,10 +90,10 @@ public class Shaders {
     }
     public void setUniform(String name, Mat3 data) {
         bind();
-        glUniformMatrix3fv(getUniformID(name), false, data.data);
+        glUniformMatrix3fv(getUniformID(name), true, data.data);
     }
     public void setUniform(String name, Mat4 data) {
         bind();
-        glUniformMatrix4fv(getUniformID(name), false, data.data);
+        glUniformMatrix4fv(getUniformID(name), true, data.data);
     }
 }

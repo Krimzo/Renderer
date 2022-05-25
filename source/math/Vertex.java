@@ -30,4 +30,8 @@ public class Vertex {
         texture = new Float2(v.texture);
         normal = new Float3(v.normal);
     }
+
+    public String toString() {
+        return "(" + world + ", " + texture + ", " + normal + ")";
+    }
 }

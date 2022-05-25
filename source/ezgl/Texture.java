@@ -1,19 +1,19 @@
 package ezgl;
 
 import math.*;
+import window.*;
 
 import javax.imageio.*;
 import java.awt.image.*;
 import java.io.File;
-import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL33.*;
 
-public class Texture {
+public class Texture extends GLRequired {
     private final int buffer;
 
-    public Texture(Int2 size, int[] pixelData) {
+    public Texture(GLContext context, Int2 size, int[] pixelData) {
+        super(context);
         buffer = glGenTextures();
         if (buffer == 0) {
             throw new Error("Could not create texture buffer!");
@@ -27,11 +27,11 @@ public class Texture {
         glGenerateMipmap(GL_TEXTURE_2D);
         glBindTexture(GL_TEXTURE_2D, 0);
     }
-    public Texture(BufferedImage image) {
-        this(new Int2(image.getWidth(), image.getHeight()), getImageData(image));
+    public Texture(GLContext context, BufferedImage image) {
+        this(context, new Int2(image.getWidth(), image.getHeight()), getImageData(image));
     }
-    public Texture(String imagePath) throws Exception {
-        this(ImageIO.read(new File(imagePath)));
+    public Texture(GLContext context, String imagePath) throws Exception {
+        this(context, ImageIO.read(new File(imagePath)));
     }
     public void finalize() {
         glDeleteTextures(buffer);
@@ -75,8 +75,15 @@ public class Texture {
         glBindTexture(GL_TEXTURE_2D, 0);
     }
 
+    public void bind() {
+        bind(0);
+    }
     public void bind(int slot) {
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, buffer);
+    }
+    public static void unbind(int slot) {
+        glActiveTexture(GL_TEXTURE0 + slot);
+        glBindTexture(GL_TEXTURE_2D, 0);
     }
 }

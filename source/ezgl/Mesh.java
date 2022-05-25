@@ -1,16 +1,19 @@
 package ezgl;
 
 import math.*;
-import utility.File;
+import renderer.*;
+import utility.*;
+import window.*;
 
 import static org.lwjgl.opengl.GL46.*;
 
-public class Mesh {
+public class Mesh extends GLRequired implements Drawable {
     private final int vertexCount;
     private final int vao;
     private final int vbo;
 
-    public Mesh(Vertex[] vertices) {
+    public Mesh(GLContext context, Vertex[] vertices) {
+        super(context);
         vertexCount = vertices.length;
 
         vao = glGenVertexArrays();
@@ -30,8 +33,8 @@ public class Mesh {
         glBindVertexArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
-    public Mesh(String objFilePath) throws Exception {
-        this(File.parseObj(objFilePath, true));
+    public Mesh(GLContext context, String objFilePath) throws Exception {
+        this(context, File.parseObj(objFilePath, true));
     }
     public void finalize() {
         glDeleteVertexArrays(vao);
@@ -53,7 +56,8 @@ public class Mesh {
         return buffer;
     }
 
-    public void draw() {
+    @Override
+    public void draw(Shaders shaders) {
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, vertexCount);
         glBindVertexArray(0);
