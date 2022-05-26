@@ -1,19 +1,15 @@
 package utility;
 
 public class Timer {
-    private float elapsedStart;
-    private float deltaStart;
-    private float deltaEnd;
+    private long elapsedStart;
+    private long deltaStart;
+    private long deltaEnd;
 
     public Timer() {
-        final float currTime = getTime();
+        final long currTime = System.nanoTime();
         elapsedStart = currTime;
         deltaStart = currTime;
         deltaEnd = currTime;
-    }
-
-    private float getTime() {
-        return System.nanoTime() * 1e-9f;
     }
 
     public void reset() {
@@ -22,17 +18,17 @@ public class Timer {
     }
 
     public void newElapsedT() {
-        elapsedStart = getTime();
+        elapsedStart = System.nanoTime();
     }
     public float getElapsedT() {
-        return getTime() - elapsedStart;
+        return (System.nanoTime() - elapsedStart) * 1e-9f;
     }
 
     public void newDeltaT() {
         deltaStart = deltaEnd;
-        deltaEnd = getTime();
+        deltaEnd = System.nanoTime();
     }
     public float getDeltaT() {
-        return deltaEnd - deltaStart;
+        return (deltaEnd - deltaStart) * 1e-9f;
     }
 }

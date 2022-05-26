@@ -11,7 +11,7 @@ import java.awt.Color;
 import static org.lwjgl.opengl.GL33.*;
 
 public class Main {
-    private static final Window window = new Window(800, 450, "Test", true);
+    private static final Window window = new Window(1600, 900, "Test", true);
     private static final GLContext context = window.initGL();
     private static final Timer timer = new Timer();
     private static final Renderer renderer = new Renderer();
