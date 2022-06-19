@@ -18,7 +18,7 @@ public class Shaders extends GLRequired {
         glDeleteShader(vShader);
         glDeleteShader(fShader);
     }
-    public void finalize() {
+    protected void finalize() {
         glDeleteProgram(program);
     }
 

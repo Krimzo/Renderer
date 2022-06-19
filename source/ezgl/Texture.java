@@ -33,7 +33,7 @@ public class Texture extends GLRequired {
     public Texture(GLContext context, String imagePath) throws Exception {
         this(context, ImageIO.read(new File(imagePath)));
     }
-    public void finalize() {
+    protected void finalize() {
         glDeleteTextures(buffer);
     }
 

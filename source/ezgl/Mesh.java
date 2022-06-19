@@ -36,7 +36,7 @@ public class Mesh extends GLRequired implements Drawable {
     public Mesh(GLContext context, String objFilePath) throws Exception {
         this(context, File.parseObj(objFilePath, true));
     }
-    public void finalize() {
+    protected void finalize() {
         glDeleteVertexArrays(vao);
         glDeleteBuffers(vbo);
     }

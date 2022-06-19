@@ -5,7 +5,7 @@ import math.*;
 import physics.*;
 import renderer.*;
 
-public class Entity implements Physical,Drawable {
+public class Entity implements Physical, Drawable {
     public Float3 scale = new Float3(1.0f);
     public Float3 rotation = new Float3();
     public Float3 position = new Float3();
