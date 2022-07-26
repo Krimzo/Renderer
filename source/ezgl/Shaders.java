@@ -22,7 +22,7 @@ public class Shaders extends GLRequired {
         glDeleteProgram(program);
     }
 
-    public static int newShader(int type, String source) {
+    private static int newShader(int type, String source) {
         final int shader = glCreateShader(type);
         if (shader == 0) {
             throw new Error("Could not create a shader!");
@@ -36,7 +36,7 @@ public class Shaders extends GLRequired {
         }
         return shader;
     }
-    public static int newProgram(int vShader, int fShader) {
+    private static int newProgram(int vShader, int fShader) {
         final int program = glCreateProgram();
         if (program == 0) {
             throw new Error("Could not create a shader program!");

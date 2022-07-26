@@ -4,6 +4,7 @@ import math.*;
 import window.*;
 
 import javax.imageio.*;
+import java.awt.*;
 import java.awt.image.*;
 import java.io.File;
 
@@ -40,17 +41,6 @@ public class Texture extends GLRequired {
     public static int getIndex(int width, int x, int y) {
         return y * width + x;
     }
-    public static int[] getImageData(BufferedImage image) {
-        int[] data = toIntBuffer(((DataBufferByte) image.getRaster().getDataBuffer()).getData());
-        for(int y = 0; y < image.getHeight() / 2; y++) {
-            for(int x = 0; x < image.getWidth(); x++) {
-                final int temp = data[getIndex(image.getWidth(), x, y)];
-                data[getIndex(image.getWidth(), x, y)] = data[getIndex(image.getWidth(), x, (image.getHeight() - 1 - y))];
-                data[getIndex(image.getWidth(), x, (image.getHeight() - 1 - y))] = temp;
-            }
-        }
-        return data;
-    }
     public static int[] toIntBuffer(byte[] pixelData) {
         int[] intBuffer = new int[pixelData.length / 3];
         for(int i = 0; i < intBuffer.length; i++) {
@@ -60,6 +50,17 @@ public class Texture extends GLRequired {
                     (pixelData[i * 3 + 2] & 0xFF);
         }
         return intBuffer;
+    }
+    public static int[] getImageData(BufferedImage image) {
+        int[] data = toIntBuffer(((DataBufferByte) image.getRaster().getDataBuffer()).getData());
+        for (int y = 0; y < image.getHeight() / 2; y++) {
+            for (int x = 0; x < image.getWidth(); x++) {
+                final int temp = data[getIndex(image.getWidth(), x, y)];
+                data[getIndex(image.getWidth(), x, y)] = data[getIndex(image.getWidth(), x, (image.getHeight() - 1 - y))];
+                data[getIndex(image.getWidth(), x, (image.getHeight() - 1 - y))] = temp;
+            }
+        }
+        return data;
     }
 
     public void setWrap(Int2 modes) {

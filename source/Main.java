@@ -55,6 +55,12 @@ public class Main {
                 }
             }
         };
+
+        final boolean[] wireframeEnabled = { false };
+        window.keyboard.v.press = () -> {
+            wireframeEnabled[0] = !wireframeEnabled[0];
+            context.setWireframe(wireframeEnabled[0]);
+        };
     }
     public static void userUpdate() {
         if (lockedEntity != null) {
@@ -66,9 +72,7 @@ public class Main {
             renderer.camera.setForward(new Float3(newForward.x, 0.0f, newForward.z));
         }
     }
-    public static void userEnd() {
-
-    }
+    public static void userEnd() {}
 
     public static void start() throws Exception {
         window.setResizeCB((Int2 newSize) -> context.setViewport(new Int2(), newSize));
@@ -94,10 +98,14 @@ public class Main {
         window.setTitle(String.valueOf((int)(1.0f / timer.getDeltaT())));
     }
 
+    public static void end() {
+        userEnd();
+    }
+
     public static void main(String[] args) throws Exception {
         window.start = Main::start;
         window.update = Main::update;
-        window.end = Main::userEnd;
+        window.end = Main::end;
         window.run();
     }
 }
